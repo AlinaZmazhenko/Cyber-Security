@@ -37,3 +37,19 @@ The email was fraudulent and used domain spoofing. Authentication mechanisms wer
 - Threat detection
 - OSINT (IP attribution)
 - SOC investigation workflow
+
+## Screenshots
+
+### Email Headers Analysis
+![Email Headers](../screenshots/email_headers_thunderbird.png)
+
+### SPF Record Check
+![SPF Check](../screenshots/SPF_check_record.png)
+![SPF Record](../screenshots/SPF_record.png)
+
+### DMARC Check
+![DMARC Check](../screenshots/dmarc_check.png)
+
+### DNS & IP Ownership
+![DNS Lookup](../screenshots/DNS_Lookup_Details.png)
+![WHOIS Lookup](../screenshots/whois_ip_lookup.png)
