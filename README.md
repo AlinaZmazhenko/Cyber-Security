@@ -1,2 +1,8 @@
-# Cyber-Security
-Hands-on cybersecurity repository showcasing SOC-focused labs, including network traffic analysis (PCAP/Wireshark), email and phishing investigation, SIEM fundamentals, and incident triage aligned with SOC Tier 1 responsibilities.
+## About Me
+Junior Cybersecurity / SOC Analyst with hands-on experience in:
+- Network traffic analysis (Wireshark)
+- Email & phishing investigation
+- SPF / DKIM / DMARC analysis
+- VirtualBox lab environments
+
+This repository contains practical labs simulating real SOC Tier 1 tasks.
