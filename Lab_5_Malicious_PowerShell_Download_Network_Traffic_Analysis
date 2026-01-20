@@ -1,0 +1,35 @@
+# Lab 5 – Malicious PowerShell Download via HTTP Traffic Analysis
+
+## Objective
+Analyze network traffic generated after a user clicked a phishing link, resulting in the download of a malicious PowerShell script. Identify the optimal network tap placement to capture HTTP traffic and extract the malicious payload.
+
+## Scenario
+A workstation user clicked on a phishing link that initiated an HTTP request to download a malicious PowerShell script. The task was to determine the most efficient point in the network to capture this traffic and analyze the HTTP response.
+
+## Tools & Environment
+- Network traffic simulator
+- Web Proxy (HTTP inspection)
+- Packet inspection panel
+
+## Methodology
+1. Reviewed the network topology and identified potential tap locations.
+2. Placed the network tap on the Web Proxy to capture all inbound and outbound HTTP traffic.
+3. Inspected captured packets to identify HTTP responses.
+4. Located a malicious PowerShell script within the HTTP payload.
+5. Extracted the embedded flag from the payload.
+
+
+## Findings
+- The Web Proxy is the most effective tap point for monitoring web traffic.
+- The malicious payload was delivered via HTTP in response to a phishing request.
+- The PowerShell script contained obfuscated malicious commands.
+
+## Conclusion
+This lab demonstrates the importance of proper network visibility and effective traffic inspection for detecting malware delivery via phishing campaigns. Proper tap placement significantly reduces analysis time and improves detection efficiency.
+
+## Skills Demonstrated
+- Network traffic analysis
+- HTTP inspection
+- Malware delivery detection
+- SOC investigation workflow
+- Blue Team fundamentals
