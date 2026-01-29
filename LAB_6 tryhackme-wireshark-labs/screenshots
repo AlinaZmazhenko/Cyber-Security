@@ -1,0 +1,65 @@
+# Wireshark Network Traffic Analysis Lab
+
+## 📌 Overview
+This lab demonstrates hands-on experience with network traffic analysis using Wireshark.
+The work is based on practical exercises from TryHackMe and focuses on HTTP traffic,
+packet inspection, metadata analysis, and expert information.
+
+## 🧰 Tools Used
+- Wireshark
+- Linux (Ubuntu)
+- TCP/IP, HTTP
+- md5sum
+
+## 🔍 Lab Tasks
+
+### 1. HTTP Traffic Analysis
+- Identified HTTP GET requests
+- Inspected headers and payload
+- Verified content type and server response
+
+---
+
+### 2. Follow TCP Stream
+- Reconstructed full HTTP conversation
+- Extracted HTML content
+- Located embedded parameters
+
+
+
+---
+
+### 3. Packet Comments
+- Located packet comments in frame 12
+- Extracted embedded message
+- Calculated MD5 hash of the comment string
+
+
+
+---
+
+### 4. String Search in Packets
+- Searched for specific strings (e.g. `r4w`)
+- Identified application-layer content
+- Extracted relevant fields from HTTP responses
+
+
+---
+
+### 5. Expert Information
+- Reviewed malformed packets and warnings
+- Analyzed protocol-level issues
+- Counted warnings and errors
+
+
+---
+
+## ✅ Key Skills Demonstrated
+- Network traffic inspection
+- HTTP protocol analysis
+- Packet filtering and searching
+- TCP stream reconstruction
+- Security-focused traffic investigation
+
+## 🚀 Notes
+This lab represents practical SOC-style analysis and entry-level blue team skills.
