@@ -1,0 +1,60 @@
+# Lab 7 — Wireshark Advanced Filtering & Analysis
+
+## 📌 Overview
+This lab focuses on advanced traffic analysis using **Wireshark**.  
+The goal is to apply complex display filters, analyze network behavior, and extract meaningful statistics from a provided packet capture file.
+
+The lab covers:
+- DNS query analysis
+- HTTP traffic inspection
+- Port-based filtering
+- TTL-based packet classification
+- Endpoint and conversation statistics
+- TCP checksum validation
+
+---
+
+## 🧰 Tools Used
+- **Wireshark**
+- Capture file: `Exercise.pcapng`
+
+---
+
+## 🧪 Tasks Performed
+
+### 1. Resolved Addresses
+- Identified resolved hostnames using Wireshark name resolution
+- Example: `bbc.map.fastly.net`
+---
+
+### 2. IPv4 Conversations
+- Reviewed IPv4 conversations
+- Analyzed packet and byte distribution between hosts
+
+---
+
+### 3. Endpoint Analysis
+- Investigated endpoints by packet count and byte usage
+- Identified hosts generating the most traffic
+
+---
+
+### 4. DNS Statistics
+- Analyzed DNS request/response behavior
+- Reviewed request–response time statistics
+
+
+---
+
+### 5. HTTP Traffic Analysis
+- Filtered HTTP GET requests
+- Identified requests to external domains (e.g. `rad.msn.com`)
+
+
+---
+
+### 6. DNS A Queries
+- Filtered **DNS queries only** (no responses)
+- Counted queries of type **A (IPv4 Address)**
+
+Display filter used:
