@@ -1,0 +1,39 @@
+🚀 Professional Profile
+This repository showcases advanced proficiency in Deep Packet Inspection (DPI) and forensic analysis. My work focuses on the security of Legacy Systems—where modern security tools often 
+fail—requiring a deep understanding of core protocols like NetBIOS, DHCP, and ARP to identify sophisticated threats such as DNS tunneling and data exfiltration.
+
+🛡️ Strategic Project Scope
+In this environment, I performed a comprehensive security audit of network traffic to identify indicators of compromise (IoC) and reconnaissance activities.
+
+1. Intelligence-Driven Threat Hunting
+Modern Protocol Forensics: Analyzed HTTP POST requests to identify potential credential harvesting or unauthorized data submissions to external endpoints.
+
+DNS Data Exfiltration Detection: Identified anomalous DNS TXT/MX records with query lengths exceeding 240 bytes—a high-confidence indicator of data tunneling used by advanced persistent threats (APTs).
+
+CyberChef Integration: Utilized industry-standard OSINT tools to "defang" malicious indicators, ensuring safe handling of threat intelligence.
+
+2. Legacy System Visibility 
+Legacy environments often rely on older broadcast and naming protocols. My analysis ensures these "blind spots" are monitored:
+
+NBNS & NetBIOS Inspection: Monitored host registration and name queries for legacy windows environments to prevent NetBIOS poisoning attacks.
+
+ARP & DHCP Forensics: Audited broadcast traffic and vendor class identifiers (e.g., android-dhcp-11) to detect unauthorized device insertion and rogue DHCP servers.
+
+3. Attack Surface Mapping (Reconnaissance Defense)
+Reconstruction of Scans: Successfully mapped a multi-stage reconnaissance effort by identifying TCP SYN floods and UDP port scans through ICMP Type 3 (Destination Unreachable) analysis.
+
+🛠️ Technical Toolkit
+Primary Tool: Wireshark (Certified Competent)
+
+Specialized Filters:
+
+dns.qry.name.len > 50 (Tunneling Detection)
+
+tcp.flags.syn==1 && tcp.flags.ack==0 (Scanning Detection)
+
+http.request.method == "POST" (Data Leak Prevention)
+
+🎖️ Global Recognition
+Award: "Wireshark Competent with Packet Analysis"
+
+Level: 7 (Top-tier practitioner ranking)
