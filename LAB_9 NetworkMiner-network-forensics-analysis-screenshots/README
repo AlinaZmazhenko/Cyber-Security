@@ -1,0 +1,30 @@
+# Network Forensics & Traffic Analysis (Lab 9)
+
+## Project Overview
+This laboratory focuses on analyzing network traffic captures (PCAP files) using **NetworkMiner 2.7.2**. The goal was to perform forensic analysis to extract files, identify host information, and recover credentials from captured sessions.
+
+## Tools Used
+* **NetworkMiner 2.7.2**: A Network Forensic Analysis Tool (NFAT) used for advanced traffic analysis.
+* **PCAP Files**: Source data containing captured network packets.
+
+## Key Objectives & Findings
+
+### 1. Metadata and Host Identification
+* **PCAP Metadata**: Analysis of the capture file `mx-3.pcap` (MD5: `bb1df7cb425b1e0c2c83171a45787e16`), identifying the timeframe and frame count.
+* **Host Profiling**: Identification of operating systems (Windows, Linux) and network interface details, including MAC addresses and NIC vendors.
+
+### 2. File Extraction & Analysis
+Using the **Files** tab, several objects were reconstructed from the traffic:
+* **HTML/Text Files**: Extracted web content including `index.html` and CentOS mirror lists.
+* **Image Recovery**: Filtering and reconstruction of image files (e.g., `ads.bmp`) transferred over unencrypted protocols.
+
+### 3. Credential Recovery
+* Successfully intercepted **NTLMSSP** authentication attempts.
+* Recovered usernames (e.g., `Administrator`) and NTLM challenge-response hashes from the `172.16.66.37` client communicating with the `172.16.66.36` server.
+
+### 4. Protocol & Parameter Inspection
+* Detailed inspection of **HTTP GET** requests, User-Agent strings, and server headers (Apache).
+* Analysis of DNS queries and session durations to map network activity.
+
+## Screenshots
+All forensic evidence and tool outputs are documented in the `/screenshots` directory of this repository.
