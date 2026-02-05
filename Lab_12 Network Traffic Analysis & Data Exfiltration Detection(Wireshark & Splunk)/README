@@ -1,0 +1,51 @@
+# Lab 12: Network Traffic Analysis - Data Exfiltration
+
+## 📌 Overview
+This laboratory focuses on identifying and analyzing **Data Exfiltration** techniques. Data exfiltration occurs when an attacker steals sensitive information from a network using various protocols to bypass security measures.
+
+In this lab, we analyze three primary vectors:
+1. **DNS Tunneling/Exfiltration**
+2. **FTP Unencrypted File Transfer**
+3. **HTTP POST Exfiltration (Web-based)**
+
+## 🛠 Tools Used
+* **Wireshark:** For deep packet inspection (DPI) and protocol analysis.
+* **Splunk Enterprise:** For log aggregation and searching for anomalies in large datasets.
+
+---
+
+## 🔍 Analysis Phases
+
+### 1. DNS Exfiltration
+Attackers often use DNS queries to sneak data out of a network because DNS traffic is rarely blocked.
+* **Observation:** High volume of queries to `tunnelcorp.net`.
+* **Indicator:** Long, randomized subdomains representing encoded data.
+* **Wireshark Filter:** `dns && frame.len > 70`
+
+
+### 2. FTP Exfiltration
+FTP is an insecure protocol that sends credentials and data in cleartext.
+* **Observation:** Captured credentials (`guest:guest`, `root:toor`).
+* **Detected Files:** `internal_passwords.csv` and `customer_data.xlsx`.
+* **Wireshark Filter:** `ftp contains "csv"` or `tcp.stream eq <index>`
+
+
+### 3. HTTP Exfiltration via Splunk
+Using Splunk to identify abnormal web traffic.
+* **Search Query:** ```splunk
+    index="data_exfil" sourcetype="http_logs" method=POST bytes_sent > 600
+    | table _time src_ip uri domain dst_ip bytes_sent
+    ```
+* **Finding:** A suspicious upload to `api.cloudsync-services.com` from internal IP `192.168.1.103`.
+
+
+---
+
+## 🛡 Mitigation Strategies
+* **DNS:** Implement DNS Filtering and inspect for high-entropy subdomains.
+* **FTP:** Disable standard FTP in favor of SFTP or FTPS (encrypted).
+* **HTTP:** Use Data Loss Prevention (DLP) solutions to inspect POST request payloads.
+* **Monitoring:** Set up alerts in Splunk for unusual outbound byte counts per session.
+
+---
+*Completed as part of the CyberSecurity Education Pathway.*
