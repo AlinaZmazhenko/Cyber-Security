@@ -1,0 +1,38 @@
+# Lab 10: Network Security Monitoring & Incident Response
+
+## Project Overview
+This laboratory work focuses on analyzing network logs to identify, track, and mitigate security threats. Using **Splunk Enterprise** and raw log analysis (WAF, VPN, Firewall), I performed a forensic investigation of a multi-stage attack.
+
+## Objectives
+* Identify web attacks (SQL Injection, XSS) via WAF logs.
+* Detect Brute-force attacks on VPN endpoints.
+* Trace "Lateral Movement" within the internal network using Splunk.
+* Analyze data exfiltration patterns.
+
+## Investigation Steps
+
+### 1. Web Application Firewall (WAF) Analysis
+I analyzed `waf_logs.txt` and identified several attack attempts:
+* **SQL Injection:** Attempt to union select users.
+* **XSS:** Injection of `<script>alert('XSS')</script>` in the search query.
+* Status: Most attacks were flagged and blocked.
+
+### 2. VPN Brute-force Detection
+Analysis of `vpn_logs.txt` showed a massive amount of `FAILED_AUTH` events from external IP `45.137.22.13`. The attacker targeted common service accounts like `admin`, `root`, `backup`, and `support`.
+
+### 3. Splunk Investigation: The Compromise
+Using Splunk SPL (Search Processing Language), I narrowed down the breach:
+* **Successful Unauthorized Access:** The attacker eventually gained access using the `svc_backup` account from IP `203.0.113.45`.
+* **Internal Reconnaissance:** The compromised account was assigned internal IP `10.8.0.23`.
+
+### 4. Lateral Movement & Exfiltration
+* **SMB Lateral Movement:** Detected multiple alerts for `ET EXPLOIT Possible MS-SMB Lateral Movement` from the compromised internal IP to several servers (`10.0.0.20`, `10.0.0.51`, `10.0.0.60`).
+* **Data Exfiltration:** Identified a `Large HTTP POST Upload` from `10.0.0.51` to an external destination, indicating potential data theft.
+
+## Tools Used
+* **SIEM:** Splunk Enterprise
+* **Logs:** WAF (Pluma), VPN Auth logs, IDS Alerts (Suricata/Snort style)
+* **OS:** Linux (Ubuntu/Debian environment)
+
+## Conclusion
+The investigation successfully traced the attack path from the initial reconnaissance and brute-force phase to internal network compromise and final data exfiltration.
