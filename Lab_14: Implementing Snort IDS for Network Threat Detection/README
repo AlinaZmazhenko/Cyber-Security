@@ -1,0 +1,35 @@
+# Lab_15: Implementing Snort IDS for Network Threat Detection
+
+## Project Overview
+This laboratory focus on configuring **Snort**, an open-source Network Intrusion Detection System (NIDS), to automatically identify and alert on suspicious network activities. While Lab_14 focused on manual analysis, this lab demonstrates how to automate security monitoring.
+
+## Configuration & Methodology
+
+### 1. Custom Rule Creation
+Using the `GNU nano` editor, I implemented custom signatures in the `/etc/snort/rules/local.rules` file to monitor specific traffic patterns:
+
+* **ICMP Detection:** Alerts whenever a Ping request is sent to the home network.
+* **SSH Monitoring:** Identifies potential remote access attempts on Port 22.
+
+**Signatures used:**
+- `alert icmp any any -> $HOME_NET any (msg:"Ping Detected"; sid:1000001; rev:1;)`
+- `alert tcp any any -> $HOME_NET 22 (msg:"SSH Connection Detected"; sid:1000002;)`
+
+### 2. Traffic Analysis Execution
+The system was executed in "NIDS mode," reading from a captured traffic file (`Intro_to_IDS.pcap`) to validate the rules:
+```bash
+sudo snort -q -l /var/log/snort -r Intro_to_IDS.pcap -A console -c /etc/snort/snort.conf
+
+# Recommendations 
+
+1. Move from IDS to IPS
+Switch Snort from Detection (IDS) to Prevention (IPS) mode. This allows the system to not just "watch" the attack, but actively drop malicious packets using daq (Data Acquisition library) and iptables.
+
+2. Signature Fine-Tuning (Anti-Brute Force)
+The current SSH rule triggers on every connection. To avoid "alert fatigue," update the rule to include a threshold. For example, only trigger an alert if there are more than 5 failed SSH attempts within 60 seconds.
+
+3. Log Integration (SIEM)
+Configure Snort to send logs to a SIEM (Security Information and Event Management) system like ELK Stack (Elasticsearch, Logstash, Kibana). This will allow you to visualize attack trends on a dashboard rather than reading raw text logs.
+
+4. ARP Spoofing Preprocessor
+Enable the arpspoof preprocessor in snort.conf. This would have automatically detected the MITM attack we analyzed in Lab_14 by checking for IP-to-MAC address mapping inconsistencies.
