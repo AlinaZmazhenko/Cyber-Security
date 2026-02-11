@@ -1,0 +1,47 @@
+# Lab 15: Advanced Snort Management & Configuration Validation
+
+## Objective
+To configure and deploy Snort as a background service (Daemon), validate configuration files for syntax integrity, and perform live process auditing on a Linux-based IDS node.
+
+## Technical Tasks Performed
+1. **Configuration Testing**: Verified `/etc/snort/snort.conf` using the `-T` flag to ensure zero syntax errors in the detection engine setup.
+2. **Daemon Deployment**: Successfully initiated Snort in background mode (`-D`) to allow persistent network monitoring without an active terminal session.
+3. **Process Auditing**: Utilized `ps -ef | grep snort` to identify Process IDs (PIDs) and manage multiple running instances of the IDS.
+4. **Deep Packet Inspection (DPI)**: Analyzed raw packet payloads using the `-d` verbose flag to identify potential Application Layer threats.
+
+## Critical Commands Used
+* `sudo snort -T -c /etc/snort/snort.conf` (Test Mode)
+* `sudo snort -c /etc/snort/snort.conf -D` (Daemon Mode)
+* `ps -ef | grep snort` (Process Auditing)
+* `sudo killall snort` (Service Termination)
+
+## Summary of Results
+The IDS was successfully validated and deployed. During the process audit, multiple redundant Snort instances were identified and terminated to optimize system resources and prevent 
+packet collision. The system is now ready for rule-based traffic filtering.
+
+# Recommendations for IDS Optimization 
+To enhance the efficiency and reliability of the Snort IDS deployment, the following actions are recommended for future operations:
+
+1. Implement Automated Service Management
+Instead of manually starting Snort with the -D flag, it is recommended to create a systemd service unit. This ensures that the IDS starts automatically upon system boot and can be easily 
+managed using systemctl start/stop/status snort. This prevents the "redundant process" issue observed during manual execution.
+
+2. Performance Tuning & Resource Monitoring
+Packet Buffer Optimization: Increase the packet buffer size in snort.conf to prevent packet drops during high-traffic spikes (e.g., during a DDoS simulation).
+
+CPU Pinning: For high-speed networks, pinning the Snort process to a specific CPU core can reduce latency and improve inspection throughput.
+
+3. Advanced Rule Management
+Variable Standardization: Ensure $HOME_NET and $EXTERNAL_NET are strictly defined in the configuration to reduce false positives.
+
+Automated Updates: Use tools like PulledPork or Oinkmaster to keep rule sets updated against the latest CVEs (Common Vulnerabilities and Exposures), as manual rule entry
+is prone to human error and obsolescence.
+
+4. Security Hardening (OPSEC)
+Non-Privileged User: Run the Snort daemon as a non-root user (e.g., sudo snort -u snort -g snort) to minimize the impact if the IDS itself is compromised.
+
+Stealth Interface: Configure the sniffing interface (eth0) in Promiscuous Mode without an assigned IP address to make the IDS node invisible to network scanners.
+
+5. Log Integration and Analysis
+Integrate Snort logs with a SIEM (Security Information and Event Management) platform like Splunk or ELK Stack. This allows for better visualization of attack patterns and long-term t
+rend analysis, moving beyond simple console alerts.
