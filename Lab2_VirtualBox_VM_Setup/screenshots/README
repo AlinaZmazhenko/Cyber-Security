@@ -1,0 +1,55 @@
+# Lab 2 – Virtual Machine Setup with VirtualBox
+
+## Objective
+Create and configure a virtual machine using Oracle VirtualBox, install Windows 10 from an ISO image, and troubleshoot common boot and configuration issues.
+
+---
+
+## Environment
+- Host OS: macOS (Intel-based MacBook Pro)
+- Hypervisor: Oracle VirtualBox
+- Guest OS: Windows 10 (64-bit)
+- ISO: Windows 10 22H2 (x64)
+
+---
+
+## VM Configuration
+- RAM: 6 GB
+- CPU: 2 cores
+- Disk: 50 GB (VDI)
+- Graphics Controller: VBoxSVGA
+- Network: NAT
+- Firmware: BIOS (UEFI disabled)
+
+---
+
+## Installation Process
+1. Created a new virtual machine in VirtualBox.
+2. Allocated system resources (memory, CPU, storage).
+3. Attached Windows 10 ISO as optical media.
+4. Encountered a boot error due to EFI being enabled.
+5. Identified and resolved the issue by disabling EFI and switching to BIOS boot mode.
+6. Successfully booted into Windows installer and started OS installation.
+
+---
+
+## Troubleshooting & Findings
+- EFI boot caused "No bootable device" error in VirtualBox.
+- Disabling EFI resolved the issue.
+- Proper ISO attachment is required for initial boot.
+
+---
+
+## Outcome
+- Windows 10 VM successfully created and booted.
+- Demonstrated understanding of virtualization fundamentals and boot troubleshooting.
+- VM ready for further security labs and analysis.
+
+---
+
+## Skills Demonstrated
+- Virtual machine creation
+- VirtualBox configuration
+- BIOS vs UEFI understanding
+- OS installation from ISO
+- Troubleshooting boot issues
