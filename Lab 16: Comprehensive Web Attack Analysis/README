@@ -1,0 +1,36 @@
+# Network Forensics: Analyzing Multi-Stage Web Attacks
+
+## Executive Summary
+This project documents the end-to-end analysis of a compromised web server. By pivoting between raw access logs and PCAP data, I identified a multi-stage attack starting with automated reconnaissance and ending with a successful SQL injection and web shell deployment. 
+
+## Technical Environment
+* **Platform:** TryHackMe (SOC Level 1 Path)
+* **Analyzed IP:** 192.168.1.10 (Target Server)
+* **Attacker IP:** 192.168.1.9 (Identified via User-Agent analysis)
+
+## Methodology & Findings
+
+### Phase 1: Reconnaissance and Brute Force
+Initial analysis of `01_access_log_analysis.jpg` showed aggressive directory fuzzing using **FFUF**. This was followed by a high-frequency credential stuffing attack against `login.php`.
+* **Signature:** The `Mozilla/5.0 (Hydra)` User-Agent in Wireshark (`03_wireshark_bruteforce.jpg`) confirmed the use of the THO Hydra tool.
+* **Observation:** The attacker received multiple HTTP 200/403 responses before identifying a valid path to the admin panel.
+
+### Phase 2: Vulnerability Exploitation (SQLi)
+The attacker transitioned from brute force to exploitation. I isolated a suspicious GET request in the traffic stream (`05_traffic_overview.jpg`).
+* **Payload Analysis:** Using CyberChef to decode the URL-encoded string (`02_payload_decoding.png`), I identified a classic tautology: `' OR '1'='1`. 
+* **Impact:** This allowed the attacker to bypass authentication logic at the database level.
+
+### Phase 3: Post-Exploitation & Data Exfiltration
+After gaining unauthorized access, the attacker uploaded a Simple Web Shell.
+* **Forensic Evidence:** Evidence of command execution (`ls`, `cat`) was found in the HTTP stream (`04_sql_injection_detected.jpg`).
+* **Objective Achieved:** The final system flag was exfiltrated via the shell interface (`06_web_shell_flag.png`).
+
+## Security Recommendations (Remediation)
+Based on this analysis, the following controls should be implemented:
+1. **Network Level:** Implement Rate Limiting and WAF (Web Application Firewall) rules to block automated tools (FFUF/Hydra) based on User-Agent and request frequency.
+2. **Application Level:** Utilize Prepared Statements (Parameterized Queries) to completely mitigate SQL injection vectors.
+3. **Identity Management:** Implement Account Lockout policies and Multi-Factor Authentication (MFA) to prevent successful credential stuffing.
+4. **Monitoring:** Configure alerts for unusual outbound traffic patterns originating from web-server directories (e.g., `/uploads/` or `/files/`).
+
+---
+*Note: This lab was completed as part of the SOC Level 1 training path on TryHackMe.*
