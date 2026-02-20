@@ -1,0 +1,31 @@
+## 📊 Executive Summary
+In this project, I performed a deep-dive investigation into a Distributed Denial of Service (DDoS) attack and local Windows system anomalies. By leveraging **Splunk (SIEM)** 
+for big-data log analysis and **Windows Event Viewer** for host-based forensics, I successfully identified the attack vectors, source IPs, and the resulting impact on system availability.
+
+## 🛠 Tech Stack
+* **SIEM:** Splunk Enterprise (SPL Querying).
+* **Forensics:** Windows Event Viewer (Security & System Logs).
+* **Traffic Analysis:** Apache Access Logs.
+* **Concepts:** DDoS Mitigation, Log Aggregation, Event ID Analysis.
+
+## 🕵️ Investigation Phase: Splunk (SIEM)
+
+### 1. Identifying the Spike
+Using Splunk, I analyzed the `access_combined` sourcetype. I observed a massive surge in HTTP 503 (Service Unavailable) errors, indicating a successful resource exhaustion attack (`06_http_503_error_spike.jpg`).
+
+### 2. Adversary Profiling
+I executed a Search Processing Language (SPL) query to aggregate the top client IPs and their respective User-Agents:
+* **Top Attacker IP:** `203.0.113.1` and associated subnet.
+* **User-Agent Analysis:** The requests utilized a variety of scripts (python-requests, curl, go-http-client), confirming a distributed botnet approach (`05_user_agent_identification.jpg`).
+* **Query used:** `index="main" | stats count by clientip, useragent | sort - count`
+
+## 🖥 Host-Based Analysis: Windows Forensics
+Transitioning from the network to the host, I examined the Windows Security logs (`07_windows_event_viewer_audit.jpg`).
+* **Focus:** Auditing "Other Object Access Events" and User Account Management.
+* **Findings:** Identified suspicious scheduled task creations and unauthorized login attempts, correlating with the external attack window.
+
+## 🛡 Strategic Recommendations
+1. **Edge Defense:** Implement Geo-blocking and IP Rate Limiting at the Load Balancer level to drop requests from identified malicious subnets.
+2. **SIEM Optimization:** Create automated Splunk alerts for HTTP 5xx error thresholds to trigger real-time incident response.
+3. **Endpoint Hardening:** Enable PowerShell Script Block Logging and Monitor Event ID 4698 (Scheduled Task Creation) for persistence indicators.
+
