@@ -1,0 +1,37 @@
+# Enterprise Log Management: Syslog Architecture & Analysis (Lab 20)
+
+## 🛡️ Project Overview
+This lab involved designing and implementing a centralized logging infrastructure using **rsyslog**. The focus was on ensuring log integrity,
+managing data lifecycles with **logrotate**, and performing real-time security auditing across a distributed Linux environment.
+
+## 🛠 Tech Stack & Skills
+* **Logging Protocols:** Syslog (RFC 5424), UDP/TCP transport.
+* **System Administration:** rsyslog, logrotate, systemd-journald.
+* **Security Analysis:** Log correlation, SSH brute-force detection.
+* **Storage Management:** Compression and retention policy automation.
+
+## ⚙️ Technical Implementation
+
+### 1. Centralized Log Aggregation
+I configured a central logging server to receive events from remote endpoints via port 514.
+* **Process:** Modified `/etc/rsyslog.conf` to enable the `imudp` and `imtcp` modules (`01_syslog_server_config.jpg`).
+* **Security Context:** Centralization is a primary defense against "log wiping," where an attacker deletes local logs to mask their footprint.
+
+
+
+### 2. Automated Lifecycle Management (logrotate)
+To balance forensic requirements with storage constraints, I implemented a custom `logrotate` policy.
+* **Policy:** Configured logs to rotate weekly, with 4 weeks of retention and Gzip compression (`02_logrotate_optimization.jpg`).
+* **Criticality:** This ensures that system partitions do not reach 100% capacity during a high-volume event (e.g., a DDoS attack).
+
+### 3. Forensic Analysis of Auth Logs
+Monitored `/var/log/auth.log` to identify unauthorized access attempts.
+* **Findings:** Identified a pattern of "Failed password for root" followed by "Connection closed," indicating a scripted SSH brute-force attack (`04_ssh_bruteforce_identification.jpg`).
+* **Correlation:** Compared timestamps across multiple hosts to verify if the attack was targeting the entire subnet simultaneously.
+
+## 🚀 Strategic Recommendations for SOC Ops
+1. **NTP Synchronization:** All logging hosts must use a common NTP source to ensure accurate event correlation across the network.
+2. **Encrypted Transport:** Implement TLS for Syslog (Syslog-over-TLS) to prevent eavesdropping on sensitive system data during transit.
+3. **Automated Alerting:** Integrate Syslog with a SIEM (like Splunk or ELK) to trigger alerts for Event ID patterns associated with privilege escalation.
+
+
