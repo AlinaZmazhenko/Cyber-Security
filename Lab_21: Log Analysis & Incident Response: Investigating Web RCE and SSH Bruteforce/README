@@ -1,0 +1,31 @@
+# Linux Incident Response & Log Analysis
+
+## 📌 Project Overview
+Ten projekt przedstawia symulację dochodzenia poincydentalnego (Forensics/IR) na serwerze Linux. Celem labu było zidentyfikowanie wektora ataku, 
+analiza złośliwej aktywności w logach systemowych oraz odnalezienie luki w aplikacji webowej.
+
+## 🔍 Investigation Steps
+
+### 1. SSH Authentication Analysis
+Analiza pliku `/var/log/auth.log` wykazała masowe próby logowania (Bruteforce) z różnych adresów IP.
+* **Wykryto:** Udane logowanie na konto `root` z adresu IP `91.224.92.79` w dniu 21 sierpnia 2025 r.
+* **Narzędzia:** `grep`, `cat`.
+
+### 2. Web Server Exploitation (RCE)
+Badanie logów Nginx (`access.log`) ujawniło próby wstrzyknięcia poleceń (Command Injection) poprzez parametr `?host=` w punkcie końcowym `/ping`.
+* **Payload:** Atakujący wykorzystał `python3` do nawiązania połączenia typu **Reverse Shell**.
+* **Vulnerability:** Kod aplikacji w `/opt/trypingme/main.py` używał funkcji `subprocess.check_output(cmd, shell=True)` bez filtrowania danych wejściowych.
+
+### 3. Privilege Escalation & Persistence
+Zidentyfikowano skrypt debugujący w katalogu `/home/itsupport/debug.sh`, który zawiera informacje o autorze (`greg@tryhackme.thm`) i może służyć do dalszej eskalacji uprawnień ze względu na uprawnienia sudo.
+
+## 🛠 Skills Demonstrated
+* **Log Forensics:** Analiza `auth.log`, `access.log` oraz `auditd`.
+* **Threat Hunting:** Identyfikacja adresów IP napastników i ich metod (TTPs).
+* **Source Code Audit:** Znalezienie luki Command Injection w kodzie Python (FastAPI).
+* **Linux Administration:** Zarządzanie procesami i uprawnieniami systemowymi.
+
+## 🛡 Recommendations
+1.  **Patching:** Zmiana `shell=True` na `shell=False` w module subprocess oraz walidacja danych wejściowych (regex dla adresów IP).
+2.  **Hardening:** Wyłączenie logowania hasłem dla użytkownika `root` (użycie kluczy SSH).
+3.  **Monitoring:** Wdrożenie Fail2Ban w celu blokowania ataków Bruteforce.
