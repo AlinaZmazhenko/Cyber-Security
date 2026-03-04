@@ -1,0 +1,36 @@
+# Lab-24: Advanced Infrastructure OSINT & Threat Mapping
+
+## Project Overview
+Lab-24 demonstrates the process of investigating suspicious infrastructure using Open Source Intelligence (OSINT) tools. The objective is to pivot from a single 
+IP address to identify hosting providers, SSL certificate history, open ports, and potential links to known malware families.
+
+## Tools Utilized
+* **IP2Location & IPinfo:** For precise geolocation, ISP identification, and ASN (Autonomous System Number) analysis.
+* **crt.sh:** To examine Certificate Transparency logs and identify subdomains via Subject Alternative Names (SANs).
+* **Censys:** To perform deep infrastructure scanning, identifying open ports (UDP 111, TCP 443) and server headers.
+* **VirusTotal (Relations & Graph):** To identify passive DNS replications, communicating malicious files, and historical SSL data linked to specific IPs.
+
+## Investigation Workflow
+
+### 1. Geolocation and ASN Profiling
+Initial analysis of IP **64.31.63.194** shows the server is located in **Paris, France**, hosted by **Limestone Networks Inc.**. The ASN is identified as **AS136258 (BrainStorm Network Inc.)**.
+
+### 2. Certificate Analysis
+Using `crt.sh`, I analyzed a certificate issued by **Let's Encrypt** for `archive.scene.org`. This analysis revealed several Subject Alternative Names, including:
+* `ftp.nl.scene.org`
+* `rsync.scene.org`
+* `http.nl.scene.org`
+
+### 3. Service & Port Discovery
+Censys revealed that the host **85.188.1.133** is running **Apache Http Server** and has **PORTMAP (111/UDP)** exposed. The HTTP response headers show an "Index of /" directory, 
+suggesting an open directory configuration.
+
+### 4. Threat Correlation
+Investigation of IP **166.1.160.118** via VirusTotal revealed a significant threat indicator:
+* **Malicious Communication:** A Win32 EXE file (`ff4c287c60e...`) was detected communicating with this infrastructure.
+* **Passive DNS:** The IP has historically resolved to domains such as `subooops.undo.it`, which has a 4/94 malicious detection rate.
+* **Historical Data:** The infrastructure is linked to **Ace Data Centers, Inc.** and has associations with several Yahoo-themed spoofed certificates.
+
+## Conclusion
+By pivoting between network-level data (Censys/IPinfo) and certificate/malware data (crt.sh/VirusTotal), we successfully mapped a malicious infrastructure footprint. The presence of open directories 
+and known malware communication suggests this infrastructure may be utilized for Command and Control (C2) or malware distribution.
