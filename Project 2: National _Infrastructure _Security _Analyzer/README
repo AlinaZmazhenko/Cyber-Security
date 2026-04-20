@@ -1,0 +1,43 @@
+# NISA: National Infrastructure Security Analyzer (v1.0)
+
+## Why I Built This
+Most network scanners are either too bloated or too slow for real-time infrastructure monitoring. I wanted to create a **lightweight, high-speed engine** that doesn't just "ping" IPs, but actually interprets the network topology. This project was born out of a need for a tool that can classify risks (Gateways vs. End-nodes) on the fly, especially in environments where every millisecond counts.
+
+---
+
+## Key Technical Decisions
+
+### 1. The Need for Speed (Asynchronous Architecture)
+I didn't go with standard sequential scanning because it's a bottleneck. Instead, I implemented the **Task Parallel Library (TPL)**. By firing off 254 simultaneous tasks, I managed to cut the scan time of a full /24 subnet down to **~70-90ms**.
+
+> **Developer's Note:** Managing 200+ concurrent threads required careful handling of the network stack to avoid packet loss.
+
+### 2. Thread-Safe Data Handling
+When you have 250+ threads trying to report back at once, a standard `List<T>` will crash. I chose `ConcurrentBag<string>` to ensure that node discovery is **thread-safe** and that no data is lost during high-speed bursts.
+
+### 3. Heuristic Risk Scoring
+I implemented a logic layer that automatically flags nodes based on their role and open services:
+
+* **CRITICAL:** Any node with an exposed **SSH (Port 22)**.
+* **HIGH:** Network **Gateways (.1)** that serve as potential single points of failure.
+* **MEDIUM/LOW:** Standard active nodes.
+
+---
+
+## Technical Stack
+* **Language:** C# 12.0
+* **Runtime:** .NET 8 / .NET 9
+* **Primary Libs:** `System.Net.NetworkInformation`, `System.Threading.Tasks`, `System.Net.Sockets`
+
+---
+
+## How to Run It
+
+To execute the analyzer and see the results on your machine, follow these steps:
+
+1. **Install .NET SDK:** Ensure you have the [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed (compatible with Windows, macOS, and Linux).
+2. **Download the Project:** Download the source code from this repository and navigate to the project folder in your terminal.
+3. **Run the Engine:** Execute the following command:
+
+```bash
+dotnet run
